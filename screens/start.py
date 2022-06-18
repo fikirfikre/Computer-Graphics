@@ -5,10 +5,11 @@ from OpenGL.GL import *
 from pygame.locals import *
 
 from screens.PlayerScreen import Screen
+from screens.RuleScreen import Rule
 
 HEIGHT = 650
 WIDTH = 1000
-
+FPS = 60
 
 class Start:
 
@@ -20,21 +21,6 @@ class Start:
         glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
     def main(self):
         pygame.display.set_mode((WIDTH, HEIGHT), OPENGL | DOUBLEBUF)
-        info = pygame.display.Info()
-
-        # basic opengl configuration
-        glViewport(0, 0, info.current_w, info.current_h)
-        glDepthRange(0, 1)
-        glMatrixMode(GL_PROJECTION)
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-        glShadeModel(GL_SMOOTH)
-        glClearColor(0.0, 0.0, 0.0, 0.0)
-        glClearDepth(1.0)
-        glDisable(GL_DEPTH_TEST)
-        glDisable(GL_LIGHTING)
-        glDepthFunc(GL_LEQUAL)
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
         glEnable(GL_BLEND)
 
         # load texture
@@ -51,11 +37,11 @@ class Start:
         glGenerateMipmap(GL_TEXTURE_2D)
         glBindTexture(GL_TEXTURE_2D, 0)
 
-    # create pygame clock
-        pygame.init()
-        MAINCLOCK = pygame.time.Clock()
 
-        while True:
+        pygame.init()
+        FramePerSec = pygame.time.Clock()
+ 
+         while True:
             # get quit event
             mousex, mousey = pygame.mouse.get_pos()
             for event in pygame.event.get():
@@ -72,16 +58,13 @@ class Start:
                     if event.type == pygame.MOUSEBUTTONUP:
                         sys.exit()
 
-
-
-
-
-
+                if 445 < mousex < 516 and 327 < mousey < 345:
+                    if event.type == pygame.MOUSEBUTTONUP:
+                        Rule().main()
 
             # prepare to render screen
             glClear(GL_COLOR_BUFFER_BIT)
-            glLoadIdentity()
-            glDisable(GL_LIGHTING)
+            # glLoadIdentity()
             glEnable(GL_TEXTURE_2D)
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
             glClearColor(0, 0, 0, 1.0)
@@ -95,13 +78,13 @@ class Start:
             glTexCoord2f(1, 0); glVertex2f(-1, 1)
             glEnd()
 
-            #draw rectangle
+            #write text
             glColor3fv((1, 1, 1))
             Start().draw_text(380, 480, "Let's Play Game", 40)
             Start().draw_text(450, 400, "START", 25)
-            Start().draw_text(450, 300, "OPTION", 25)
+            Start().draw_text(450, 300, "RULES", 25)
             Start().draw_text(460, 200, "QUIT", 26)
 
             pygame.display.flip()
-            MAINCLOCK.tick(60)
+            FramePerSec.tick(FPS)
 Start().main()
