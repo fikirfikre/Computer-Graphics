@@ -19,23 +19,9 @@ class Winner:
         textData = pygame.image.tostring(textSurface, "RGBA", True)
         glWindowPos2d(x, y)
         glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
+        
     def main(self):
         pygame.display.set_mode((WIDTH, HEIGHT), OPENGL | DOUBLEBUF)
-        info = pygame.display.Info()
-
-        # basic opengl configuration
-        glViewport(0, 0, info.current_w, info.current_h)
-        glDepthRange(0, 1)
-        glMatrixMode(GL_PROJECTION)
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-        glShadeModel(GL_SMOOTH)
-        glClearColor(0.0, 0.0, 0.0, 0.0)
-        glClearDepth(1.0)
-        glDisable(GL_DEPTH_TEST)
-        glDisable(GL_LIGHTING)
-        glDepthFunc(GL_LEQUAL)
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
         glEnable(GL_BLEND)
 
         # load texture
@@ -51,6 +37,7 @@ class Winner:
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WIDTH, HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, s)
         glGenerateMipmap(GL_TEXTURE_2D)
         glBindTexture(GL_TEXTURE_2D, 0)
+   
 
     # create pygame clock
         pygame.init()
